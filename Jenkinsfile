@@ -61,5 +61,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                bat 'kubectl apply -f k8s/product.yaml'
+                bat 'kubectl apply -f k8s/order.yaml'
+
+                bat "kubectl set image deployment/product-service product-service=${DOCKERHUB_USERNAME}/product-service:${BUILD_NUMBER}"
+                bat "kubectl set image deployment/order-service order-service=${DOCKERHUB_USERNAME}/order-service:${BUILD_NUMBER}"
+
+                bat 'kubectl rollout status deployment/product-service'
+                bat 'kubectl rollout status deployment/order-service'
+            }
+        }
     }
 }
