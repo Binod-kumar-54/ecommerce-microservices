@@ -1,0 +1,21 @@
+package com.ecommerce.order_service.controller;
+
+import com.ecommerce.order_service.dto.OrderResponse;
+import com.ecommerce.order_service.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+    @Autowired
+    private OrderService orderService;
+
+    @GetMapping("/{id}")
+    public OrderResponse getOrderById(@PathVariable Long id){
+        return orderService.getOrder(id);
+    }
+}
